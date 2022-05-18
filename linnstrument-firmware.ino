@@ -57,7 +57,7 @@ For any questions about this, contact Roger Linn Design at support@rogerlinndesi
 /******************************************** CONSTANTS ******************************************/
 
 const char* OSVersion = "230";
-const char* OSVersionBuild = ".065";
+const char* OSVersionBuild = ".123";  // 1=A, 23=W
 
 // SPI addresses
 #define SPI_LEDS    10               // Arduino pin for LED control over SPI
@@ -1325,6 +1325,7 @@ void setup() {
   for (byte ss=0; ss<SECRET_SWITCHES; ++ss) {
     secretSwitch[ss] = false;
   }
+  //SWITCH_DEBUGMIDI = true; // Can't easily set this on a 128
 
   // detect if test mode is active by holding down the per-split button at startup
   if (switchPressAtStartup(7)) {
@@ -1456,6 +1457,8 @@ inline void modeLoopPerformance() {
              sensorCell->isPastDebounceDelay()) {
         handleTouchRelease();
     }
+
+    handlePositionCCs();
 
     if (canShortCircuit) {
       sensorCell->shouldRefreshData();                                           // immediately process this cell again without going through a full surface scan
